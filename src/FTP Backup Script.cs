@@ -16,7 +16,7 @@ public class FTPBackupScript
             SessionOptions sessionOptions = new SessionOptions
             {
                 Protocol = Protocol.Ftp,
-                HostName = "insertHostNameHere",
+                HostName = "insertHostName",
                 PortNumber = 0, // Insert port number here
                 UserName = "insertUserNameHere",
                 Password = "insertPasswordHere",
@@ -52,8 +52,11 @@ public class FTPBackupScript
                     Console.WriteLine("Download of {0} succeeded", transferResult.FileName);
                 }
 
-                // Create a new folder for today
-                session.CreateDirectory(today);
+                // Create new folder for today if it doesn't exist
+                if (!session.FileExists("/" + today))
+                {
+                    session.CreateDirectory(today);
+                }                
 
                 // Upload downloaded files to new folder
                 foreach (string fileLocation in filesToCopy)
